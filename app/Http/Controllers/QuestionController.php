@@ -46,9 +46,10 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
+    public function show($id)
     {
-        //
+        $question = Question::find($id);
+        return view('show', ['question' => $question]);
     }
 
     /**
