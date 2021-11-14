@@ -21,7 +21,10 @@
             </p>
    @endforeach
    </table>
+   
+   @auth
    <div>
         <a href={{ route('question.new') }} class='btn btn-outline-primary'>質問投稿</a>
     <div>
+    @endauth
 @endsection
