@@ -66,9 +66,11 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
+    public function edit($id)
     {
-        //
+        $question = Question::find($id);
+        $categories = Category::all()->pluck('name', 'id');
+        return view('edit', ['question' => $question, 'categories' => $categories]);
     }
 
     /**
