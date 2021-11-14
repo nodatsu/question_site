@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\Category;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -26,7 +27,9 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        $question = new Question;
+        $categories = Category::all()->pluck('name', 'id');
+        return view('new', ['question' => $question, 'categories' => $categories]);
     }
 
     /**
