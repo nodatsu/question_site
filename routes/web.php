@@ -12,3 +12,6 @@ Route::delete('/question/{id}', 'QuestionController@destroy')->name('question.de
 Route::get('/', function () {
     return redirect('/questions');
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
