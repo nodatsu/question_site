@@ -1,6 +1,11 @@
 @extends('layout')
 
 @section('content')
+<div class="style1">
+<p><h2>アンケートへのご協力お願い致します！</h2></p>
+<a href="https://forms.office.com/r/CLrWYXbecA">アンケートFORMへ</a>
+</div>
+
         <p><h1>質問一覧</h1></p>
 
 <table class='table table-striped table-hover'>
@@ -30,3 +35,8 @@
     <div>
     @endauth
 @endsection
+<style>
+    .style1{
+        text-align:center;
+    }
+</style>
