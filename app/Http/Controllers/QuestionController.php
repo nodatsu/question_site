@@ -45,9 +45,12 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $question = new Question;
+        $user = \Auth::user();
+        
         $question->title = request('title');
         $question->question_content = request('question_content');
         $question->category_id = request('category_id');
+        $question->user_id = $user->id;
         $question->save();
         return redirect()->route('question.detail', ['id' => $question->id]);
     }
@@ -61,7 +64,14 @@ class QuestionController extends Controller
     public function show($id)
     {
         $question = Question::find($id);
-        return view('show', ['question' => $question]);
+        $user = \Auth::user();
+        if ($user) {
+            $login_user_id = $user->id;
+        } else {
+            $login_user_id = "";
+        }
+        
+        return view('show', ['question' => $question, 'login_user_id' => $login_user_id]);
     }
 
     /**
