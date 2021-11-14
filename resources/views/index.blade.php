@@ -21,4 +21,7 @@
             </p>
    @endforeach
    </table>
+   <div>
+        <a href={{ route('question.new') }} class='btn btn-outline-primary'>質問投稿</a>
+    <div>
 @endsection

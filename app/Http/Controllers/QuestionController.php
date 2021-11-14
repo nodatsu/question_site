@@ -40,7 +40,12 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $question = new Question;
+        $question->title = request('title');
+        $question->question_content = request('question_content');
+        $question->category_id = request('category_id');
+        $question->save();
+        return redirect()->route('question.detail', ['id' => $question->id]);
     }
 
     /**
