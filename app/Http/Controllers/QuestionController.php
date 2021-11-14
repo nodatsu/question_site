@@ -80,9 +80,14 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, $id,Question $question)
     {
-        //
+        $question = Question::find($id);
+        $question->title = request('title');
+        $question->question_content = request('question_content');
+        $question->category_id = request('category_id');
+        $question->save();
+        return redirect()->route('question.detail', ['id' => $question->id]);
     }
 
     /**

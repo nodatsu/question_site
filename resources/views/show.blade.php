@@ -8,5 +8,6 @@
     </div>
     <div>
         <a href={{ route('question.list') }}>一覧に戻る</a>
+        | <a href={{ route('question.edit', ['id' =>  $question->id]) }}>編集</a>
     </div>
 @endsection
