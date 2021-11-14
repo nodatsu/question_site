@@ -7,6 +7,7 @@ Route::get('/question/edit/{id}', 'QuestionController@edit')->name('question.edi
 Route::post('/question/update/{id}', 'QuestionController@update')->name('question.update');
 
 Route::get('/question/{id}', 'QuestionController@show')->name('question.detail');
+Route::delete('/question/{id}', 'QuestionController@destroy')->name('question.destroy');
 
 Route::get('/', function () {
     return redirect('/questions');
