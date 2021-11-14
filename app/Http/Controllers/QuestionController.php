@@ -10,7 +10,7 @@ class QuestionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index','help', 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -21,6 +21,11 @@ class QuestionController extends Controller
     {
         $questions = Question::all();
         return view('index', ['questions' => $questions]);
+    }
+    public function help()
+    {
+        $questions = Question::all();
+        return view('help', ['questions' => $questions]);
     }
 
 

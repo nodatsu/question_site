@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-        <h1>質問一覧</h1>
+        <p><h1>質問一覧</h1></p>
 
 <table class='table table-striped table-hover'>
     <tr>
@@ -18,7 +18,8 @@
                     </td>
                 
             <td>{{ $question->question_content}}</td>
-            <td>{{ $question->user->name }}</td>
+            
+            <td>{{ $question->user->name}}</td>
             </p>
    @endforeach
    </table>
