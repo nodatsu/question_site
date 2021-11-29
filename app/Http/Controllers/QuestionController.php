@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use App\Category;
+use App\reply;
+
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -68,15 +70,17 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
+        
         $question = Question::find($id);
+        $replies = $question->replies;
         $user = \Auth::user();
         if ($user) {
             $login_user_id = $user->id;
         } else {
             $login_user_id = "";
         }
-        
-        return view('show', ['question' => $question, 'login_user_id' => $login_user_id]);
+
+        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
     }
 
     /**
