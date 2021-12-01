@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use App\Category;
-use App\reply;
+use App\Reply;
 
 use Illuminate\Http\Request;
 
@@ -124,5 +124,26 @@ class QuestionController extends Controller
         $question = Question::find($id);
         $question->delete();
         return redirect('/questions');
+    }
+    
+    public function reply(Request $request, $id)
+    {
+        $reply = new Reply;
+        
+        $reply->question_reply = request('question_reply');
+        $reply->question_id = $id;
+        $reply->save();
+        
+        $question = Question::find($id);
+        $replies = $question->replies;
+        $user = \Auth::user();
+        if ($user) {
+            $login_user_id = $user->id;
+        } else {
+            $login_user_id = "";
+        }
+        
+        //return redirect()->route('question.detail',['id' => $id]);
+        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
     }
 }

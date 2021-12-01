@@ -11,7 +11,7 @@
         
     @auth
     <p>回答一覧</p>
-    
+        
         @foreach ($replies as $reply) 
         {{ $reply->question_reply}}
         @endforeach
@@ -24,6 +24,23 @@
             {{ Form::submit('削除',['class' => 'btn btn-outline-danger']) }}
         {{ Form::close() }}
         @endif
+        <p></p>
+        
+         @empty ($question->user_id)
+            回答をするにはログインが必要です！
+         @else
+         
+            {{ Form::open(['route' => ['question.reply', ['id' =>  $question->id]]]) }}
+ 
+                {{ Form::label('question_show', '返信内容：') }}
+                {{ Form::text('question_reply', null) }}
+       
+                {{ Form::submit('返信する', ['class' => 'btn btn-outline-primary']) }}
+            
+            {{ Form::close() }}
+        @endempty
         @endauth
+        
+        
     </div>
 @endsection
