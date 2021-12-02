@@ -21,6 +21,13 @@
                 <td>{{$question->user->name}}</td>
             </tr>
     </table>
+    
+    @empty($question->interest)
+    知りたい：0
+    @else
+    知りたい：{{$question->interest}}
+    @endempty
+    
     <div>
         <div class="center">
         <a href={{ route('question.list') }}>一覧に戻る</a>
@@ -28,6 +35,7 @@
         @empty($question->user->name)
         回答機能を使うにはログインする必要があります！
         @endempty
+       
         
     @auth
     
@@ -40,12 +48,20 @@
         @endif
         </div>
     <p><h3>回答一覧</h3></p>
-        
+    
+   
+    
         @foreach ($replies as $reply) 
+        
+         @php
+        $user = \App\User::find($reply->user_id);    
+        @endphp
+        
         <p>・{{$reply->question_reply}}
-        -{{$question->user->name}}-</p>
+        -{{$user->name}}-いいね：{{$reply->good}}</p>
         @endforeach
         
+
        
         <p></p>
         

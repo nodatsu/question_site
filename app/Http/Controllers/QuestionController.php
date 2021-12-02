@@ -130,20 +130,21 @@ class QuestionController extends Controller
     {
         $reply = new Reply;
         
+        $user = \Auth::user();
         $reply->question_reply = request('question_reply');
         $reply->question_id = $id;
+        $reply->user_id = $user->id;
         $reply->save();
         
         $question = Question::find($id);
         $replies = $question->replies;
-        $user = \Auth::user();
+        
         if ($user) {
             $login_user_id = $user->id;
         } else {
             $login_user_id = "";
         }
         
-        //return redirect()->route('question.detail',['id' => $id]);
-        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
+        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id ]);
     }
 }
