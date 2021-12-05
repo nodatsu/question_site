@@ -22,15 +22,20 @@
             </tr>
     </table>
     
+    <img src="storage/know.png" width="100" height="100" alt="画像1">
+    
     @empty($question->interest)
     知りたい：0
     @else
     知りたい：{{$question->interest}}
     @endempty
+   
+    
     
     <div>
+        <p>
         <div class="center">
-        <a href={{ route('question.list') }}>一覧に戻る</a>
+        <a href={{ route('question.list') }}>一覧に戻る</a></p>
         
         @empty($question->user->name)
         回答機能を使うにはログインする必要があります！
@@ -40,7 +45,8 @@
     @auth
     
      @if ($question->user_id === $login_user_id)
-        <a href={{ route('question.edit', ['id' =>  $question->id]) }}>質問内容を編集</a>
+     <p>
+        <a href={{ route('question.edit', ['id' =>  $question->id]) }}>質問内容を編集</a></p>
         
         {{ Form::open(['method' => 'delete', 'route' => ['question.destroy', $question->id]]) }}
             {{ Form::submit('質問内容を削除',['class' => 'btn btn-outline-danger']) }}
@@ -56,9 +62,20 @@
          @php
         $user = \App\User::find($reply->user_id);    
         @endphp
+        {{$user->name}}
+        @empty($reply->created_at)
         
-        <p>・{{$reply->question_reply}}
-        -{{$user->name}}-いいね：{{$reply->good}}</p>
+        @else
+        -{{$reply->created_at}}-
+        @endempty
+        
+        <p>{{$reply->question_reply}}</p>
+        <p>
+            <img src="storage/good.jpg" width="30" height="30" alt="good">
+            いいね：{{$reply->good}}
+        <form>
+        <button type="" name="good" value"いいね"></button></p><br>
+        </form>
         @endforeach
         
 
