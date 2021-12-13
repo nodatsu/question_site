@@ -22,13 +22,33 @@
             </tr>
     </table>
     
-    <img src="storage/know.png" width="100" height="100" alt="画像1">
     
-    @empty($question->interest)
-    知りたい：0
-    @else
-    知りたい：{{$question->interest}}
-    @endempty
+    
+<span>
+ <img src="storage/know.png" width="100" height="100" alt="画像1">
+ 
+<!-- もし$niceがあれば＝ユーザーが「いいね」をしていたら -->
+@isset($interest)
+<!-- 「いいね」取消用ボタンを表示 -->
+	<a href="{{ route('uninterest', $question) }}" class="btn btn-success btn-sm">
+		知りたいを取り消す
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $question->interests()->count()}}
+		</span>
+	</a>
+@else
+<!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
+	<a href="{{ route('interest', $question) }}" class="btn btn-secondary btn-sm">
+		知りたい
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $question->interests()->count() }}
+		</span>
+	</a>
+@endisset
+</span>
+
    
     
     

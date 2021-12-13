@@ -13,6 +13,9 @@ Route::post('/question/update/{id}', 'QuestionController@update')->name('questio
 Route::get('/question/{id}', 'QuestionController@show')->name('question.detail');
 Route::delete('/question/{id}', 'QuestionController@destroy')->name('question.destroy');
 
+Route::get('/reply/interest/{question}', 'QuestionController@interest')->name('interest');
+Route::get('/reply/uninterest/{question}', 'QuestionController@uninterest')->name('uninterest');
+
 
 Route::get('/', function () {
     return redirect('/questions');

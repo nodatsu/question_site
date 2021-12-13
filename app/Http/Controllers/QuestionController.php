@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Question;
 use App\Category;
 use App\Reply;
+use App\Interest;
 
 use Illuminate\Http\Request;
 
@@ -70,17 +71,18 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        
         $question = Question::find($id);
+        
         $replies = $question->replies;
         $user = \Auth::user();
         if ($user) {
             $login_user_id = $user->id;
+            $interest = Interest::where('question_id', $question->id)->where('user_id',$login_user_id)->first();
         } else {
             $login_user_id = "";
         }
 
-        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
+        return view('show', compact('question','interest'),['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
     }
 
     /**
@@ -146,5 +148,22 @@ class QuestionController extends Controller
         }
         
         return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id ]);
+    }
+    public function interest(Question $question, Request $request)
+    {
+        $interest=new Interest();
+        $interest->question_id=$question->id;
+        $interest->user_id=\Auth::user()->id;
+        $interest->save();
+    
+        return back();
+        
+    }
+    public function uninterest(Question $question, Request $request){
+        
+        $user=\Auth::user()->id;
+        $interests=Interest::where('question_id', $question->id);
+        $interests->where('user_id',$user)->first()->delete();
+        return back();
     }
 }

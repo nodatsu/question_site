@@ -19,4 +19,7 @@ class Question extends Model
     {
         return $this->hasMany('App\Reply');
     }
+    public function interests() {
+        return $this->hasMany('App\Interest');
+    }
 }
