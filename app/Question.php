@@ -22,4 +22,7 @@ class Question extends Model
     public function interests() {
         return $this->hasMany('App\Interest');
     }
+    public function goods(){
+        return $this->hasmany('App\Good');
+    }
 }

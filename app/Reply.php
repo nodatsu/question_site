@@ -10,4 +10,10 @@ class Reply extends Model
     {
         return $this->belongsTo('App\Question');
     }
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+    public function goods() {
+        return $this->hasMany('App\Good');
+    }
 }

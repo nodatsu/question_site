@@ -6,6 +6,7 @@ use App\Question;
 use App\Category;
 use App\Reply;
 use App\Interest;
+use App\Good;
 
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public static function index()
     {
         $questions = Question::all();
         return view('index', ['questions' => $questions]);
@@ -69,20 +70,22 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
         $question = Question::find($id);
-        
+        $reply = Reply::find($id);
         $replies = $question->replies;
         $user = \Auth::user();
         if ($user) {
             $login_user_id = $user->id;
             $interest = Interest::where('question_id', $question->id)->where('user_id',$login_user_id)->first();
+            $good = Good::where('reply_id', $reply->id)->where('user_id',$login_user_id)->first();
         } else {
             $login_user_id = "";
         }
 
         return view('show', compact('question','interest'),['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
+        
     }
 
     /**
@@ -149,13 +152,11 @@ class QuestionController extends Controller
         
         return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id ]);
     }
-    public function interest(Question $question, Request $request)
-    {
+    public function interest(Question $question, Request $request){
         $interest=new Interest();
         $interest->question_id=$question->id;
         $interest->user_id=\Auth::user()->id;
         $interest->save();
-    
         return back();
         
     }
@@ -164,6 +165,22 @@ class QuestionController extends Controller
         $user=\Auth::user()->id;
         $interests=Interest::where('question_id', $question->id);
         $interests->where('user_id',$user)->first()->delete();
+        return back();
+    }
+    
+    public function good(Reply $reply,Request $request){
+        
+        $good =new Good();
+        $good->reply_id=$reply->id;
+        $good->user_id=\Auth::user()->id;
+        $good->save();
+        return back();
+    }
+     public function ungood(Reply $reply, Request $request){
+        
+        $user=\Auth::user()->id;
+        $goods=Good::where('reply_id', $reply->id);
+        $goods->where('user_id',$user)->first()->delete();
         return back();
     }
 }
