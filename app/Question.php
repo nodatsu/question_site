@@ -17,7 +17,8 @@ class Question extends Model
     }
     public function replies()
     {
-        return $this->hasMany('App\Reply');
+        return $this->hasMany('App\Reply')->orderBy('created_at', 'desc');
+        
     }
     public function interests() {
         return $this->hasMany('App\Interest');

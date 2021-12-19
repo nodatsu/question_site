@@ -79,6 +79,7 @@ class QuestionController extends Controller
         if ($user) {
             $login_user_id = $user->id;
             $interest = Interest::where('question_id', $question->id)->where('user_id',$login_user_id)->first();
+            
             $good = Good::where('reply_id', $reply->id)->where('user_id',$login_user_id)->first();
         } else {
             $login_user_id = "";

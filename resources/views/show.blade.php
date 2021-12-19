@@ -26,17 +26,14 @@
 </table>
 
 <!-- もし$niceがあれば＝ユーザーが「いいね」をしていたら -->
+<p>知りたい：{{$question->interests()->count()}}</p>
 @auth
     <span>
-        <img src="storage/know.png" width="100" height="100" alt="画像1">
         @isset($interest)
         <!-- 「いいね」取消用ボタンを表示 -->
         	<a href="{{ route('uninterest', $question) }}" class="btn btn-danger btn-sm">
         		知りたいを取り消す
         		<!-- 「いいね」の数を表示 -->
-        		<span class="badge">
-        			{{ $question->interests()->count()}}
-        		</span>
         	</a>
         @else
         <!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
@@ -89,17 +86,6 @@
         @endempty
         <p></p>
     @endauth
-        
-    @isset($reply)
-        <p>
-            <select name="narabi2">
-                <option value="asc">昇順</option>
-                <option value="desc">降順</option>
-            </select>
-        </p>
-    @else
-        <p>※回答がないためソート機能が利用出来ません</p>
-    @endisset
     
     @foreach ($replies as $reply) 
             
@@ -116,32 +102,34 @@
         <p>{{$reply->question_reply}}</p>
             
         <span>
-            @auth
-                @php
-                    $good = \App\Good::where('reply_id', $reply->id)->where('user_id',$login_user_id)->first();
-                @endphp
-        
-                @isset($good)
-                <!-- 「いいね」取消用ボタンを表示 -->
-            	    <a href="{{ route('ungood', $reply) }}" class="btn btn-danger btn-sm">
-        		        いいねを取り消す
-        		        <!-- 「いいね」の数を表示 -->
-        		        <span class="badge">
-        			        {{ $reply->goods()->count()}}
-        		        </span>
-        	        </a>
-                @else
-                    <!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
-        	        <a href="{{ route('good', $reply) }}" class="btn btn-success btn-sm">
-        		    いいね
-        		    <!-- 「いいね」の数を表示 -->
-        		        <span class="badge">
-        			        {{ $reply->goods()->count() }}
-        		        </span>
-        	        </a>
-        	        <p></p>
-                @endisset
-            @endauth
+        @if($reply)
+            @php
+                $good = \App\Good::where('reply_id', $reply->id)->where('user_id',$login_user_id)->first();
+            @endphp
+            @else
+            <p>回答がありません</p>
+            @endif
+            <p>いいね：{{$reply->goods()->count()}}</p>
+        @auth
+            @isset($good)
+            <!-- 「いいね」取消用ボタンを表示 -->
+            </p>
+            <a href="{{ route('ungood', $reply) }}" class="btn btn-danger btn-sm">
+        	いいねを取り消す
+        	</a>
+        	<p></p>
+            @else
+            <!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
+	        <a href="{{ route('good', $reply) }}" class="btn btn-success btn-sm">
+		    いいね
+		    <!-- 「いいね」の数を表示 -->
+		        <span class="badge">
+			        {{ $reply->goods()->count() }}
+		        </span>
+	        </a>
+	        <p></p>
+            @endisset
+        @endauth
         </span>
     @endforeach
 @endsection
