@@ -7,14 +7,18 @@
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' >
         <title>質問箱 -青森大学質問投稿サイト-</title>
         <style>body {padding-top: 80px;}</style>
-        <script src='{{ asset("js/app.js") }}' defer></script>
+        
     </head>
     <body>
         <nav class='navbar navbar-expand-md navbar-dark bg-dark fixed-top'>
             <a class='navbar-brand' href={{route('question.list')}}>質問箱</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         
@@ -23,6 +27,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        
                         <a class="nav-link" href="{{ route('question.help') }}">ヘルプ</a>
                         @guest
                             <li class="nav-item">
@@ -53,11 +58,18 @@
                             </li>
                         @endguest
                     </ul>
+                    
                 </div>
             </div>
         </nav>
+        @if (session('flash_message'))
+            <div class="container flash_message">
+                {{ session('flash_message') }}
+            </div>
+        @endif
         <div class='container'>
             @yield('content')
         </div>
+        <script src='{{ asset("js/app.js") }}' defer></script>
     </body>
 </html>

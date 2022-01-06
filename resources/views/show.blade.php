@@ -3,7 +3,21 @@
 @section('content')
     
     
-<h1>{{ $question->title }}</h1>
+    
+<table class='table table-striped table-hover'>
+    <h4>{{ $question->title }}</h4>
+    
+    <tr><th><p>カテゴリー</p></th></tr>
+    <tr><td>{{ $question->category->name }}</td></tr>
+
+    <tr><td><p>質問内容</p></td></tr>
+    <tr><td>{{ $question->question_content }}</td></tr>
+    <tr><td><p>投稿者名</p></td></tr>
+        <tr><td>{{$question->user->name}}</td></tr>
+    </tr>
+
+
+{{--
 <table class='table table-striped table-hover'>
     <tr>
         <th>カテゴリー</th>
@@ -24,9 +38,9 @@
         <td>{{$question->user->name}}</td>
     </tr>
 </table>
-
+--}}
 <!-- もし$niceがあれば＝ユーザーが「いいね」をしていたら -->
-<p>知りたい：{{$question->interests()->count()}}</p>
+<tr><td><p>知りたい：{{$question->interests()->count()}}<br><br>
 @auth
     <span>
         @isset($interest)
@@ -35,6 +49,7 @@
         		知りたいを取り消す
         		<!-- 「いいね」の数を表示 -->
         	</a>
+        	</p></td></tr>
         @else
         <!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
         	<a href="{{ route('interest', $question) }}" class="btn btn-success btn-sm">
@@ -44,9 +59,12 @@
         			{{ $question->interests()->count() }}
         		</span>
         	</a>
+        	</p></td></tr>
         @endisset
     </span>
 @endauth
+</table>
+<p></p>
 
 <div>
     <p>
@@ -68,7 +86,7 @@
     @endauth
         </div>
     
-    <p><h3>回答一覧</h3></p>
+    
     
     @auth
         @empty($question->user_id)
@@ -78,7 +96,9 @@
             {{ Form::open(['route' => ['question.reply', ['id' =>  $question->id]]]) }}
  
                 {{ Form::label('question_show', '返信内容：') }}
-                {{ Form::text('question_reply', null) }}
+                
+                {{ Form::textarea('question_reply', null) }}
+                
        
                 {{ Form::submit('返信する', ['class' => 'btn btn-outline-primary']) }}
             
@@ -86,21 +106,25 @@
         @endempty
         <p></p>
     @endauth
-    
+    <p></p>
+    <p><h4>回答一覧</h4></p>
     @foreach ($replies as $reply) 
             
         @php
             $user = \App\User::find($reply->user_id);  
         @endphp
-        {{$user->name}}
+        
+        <table class='table table-striped table-hover'>
+        <tr><th>{{$user->name}}
             
         @empty($reply->created_at)
-            
+            </th></tr>
         @else
-            -{{$reply->created_at}}-
+            -{{$reply->created_at}}-</th></tr>
         @endempty
-        <p>{{$reply->question_reply}}</p>
-            
+        <tr><td><p>{{$reply->question_reply}}</p></td></tr>
+
+        
         <span>
         @if($reply)
             @php
@@ -109,28 +133,27 @@
             @else
             <p>回答がありません</p>
             @endif
-            <p>いいね：{{$reply->goods()->count()}}</p>
+            <tr><td><p>いいね：{{$reply->goods()->count()}}<br><br>
         @auth
             @isset($good)
             <!-- 「いいね」取消用ボタンを表示 -->
             </p>
             <a href="{{ route('ungood', $reply) }}" class="btn btn-danger btn-sm">
-        	いいねを取り消す
+        	いいねを取り消す</p></td></tr>
         	</a>
         	<p></p>
             @else
             <!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
 	        <a href="{{ route('good', $reply) }}" class="btn btn-success btn-sm">
-		    いいね
+		    いいね</p></td></tr>
 		    <!-- 「いいね」の数を表示 -->
-		        <span class="badge">
-			        {{ $reply->goods()->count() }}
-		        </span>
 	        </a>
 	        <p></p>
             @endisset
+            
         @endauth
         </span>
+        </table>
     @endforeach
 @endsection
 
@@ -147,6 +170,10 @@
     
     .center{
         text-align:center;
+    }
+    .textarea{
+        width: 100%;
+        height: 75px;
     }
     
 </style>

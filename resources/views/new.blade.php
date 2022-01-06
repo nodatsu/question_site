@@ -9,7 +9,9 @@
         </div>
         <div class='form-group'>
             {{ Form::label('question_content', '質問内容:') }}
-            {{ Form::text('question_content', null) }}
+            <div class="textarea">
+            {{ Form::textarea('question_content', null) }}
+            </div>
         </div>
         <div class='form-group'>
             {{ Form::label('category_id', 'カテゴリ:') }}
@@ -25,3 +27,9 @@
     </div>
 
 @endsection
+<style>
+    .textarea{
+        width:100%;
+        height: 75px;
+    }
+</style>

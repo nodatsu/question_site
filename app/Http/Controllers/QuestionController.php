@@ -41,7 +41,10 @@ class QuestionController extends Controller
     public function create()
     {
         $question = new Question;
+        
+        
         $categories = Category::all()->pluck('name', 'id');
+        
         return view('new', ['question' => $question, 'categories' => $categories]);
     }
 
@@ -55,12 +58,24 @@ class QuestionController extends Controller
     {
         $question = new Question;
         $user = \Auth::user();
+        if(request('title')){
+            if(request('question_content')){
+                $question->title = request('title');
+                $question->question_content = request('question_content');
+                $question->category_id = request('category_id');
+                $question->user_id = $user->id;
+                $question->save();
+            }else{
+                return back()->with('flash_message', '質問内容が未記入です！');
+            } 
+        }else{
+            if(request('question_content')){
+                return back()->with('flash_message', 'タイトルが未記入です！');
         
-        $question->title = request('title');
-        $question->question_content = request('question_content');
-        $question->category_id = request('category_id');
-        $question->user_id = $user->id;
-        $question->save();
+            }else{
+                return back()->with('flash_message', 'タイトル・質問内容が未記入です！');
+            }
+        }
         return redirect()->route('question.detail', ['id' => $question->id]);
     }
 
@@ -80,12 +95,12 @@ class QuestionController extends Controller
             $login_user_id = $user->id;
             $interest = Interest::where('question_id', $question->id)->where('user_id',$login_user_id)->first();
             
-            $good = Good::where('reply_id', $reply->id)->where('user_id',$login_user_id)->first();
+            
         } else {
             $login_user_id = "";
         }
 
-        return view('show', compact('question','interest'),['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id]);
+        return view('show', compact('question','interest','replies','login_user_id'));
         
     }
 
@@ -135,23 +150,29 @@ class QuestionController extends Controller
     public function reply(Request $request, $id)
     {
         $reply = new Reply;
+        if(request('question_reply')){
+            $user = \Auth::user();
+            $reply->question_reply = request('question_reply');
+            $reply->question_id = $id;
+            $reply->user_id = $user->id;
+            $reply->save();
+        }else{
+            return back()->with('flash_message', '回答欄が空です！');
+        }
         
-        $user = \Auth::user();
-        $reply->question_reply = request('question_reply');
-        $reply->question_id = $id;
-        $reply->user_id = $user->id;
-        $reply->save();
         
         $question = Question::find($id);
         $replies = $question->replies;
         
         if ($user) {
             $login_user_id = $user->id;
+            $interest = Interest::where('question_id', $question->id)->where('user_id',$login_user_id)->first();
+            
         } else {
             $login_user_id = "";
         }
         
-        return view('show', ['question' => $question,'replies'=> $replies, 'login_user_id' => $login_user_id ]);
+        return view('show', compact('question','interest','replies','login_user_id'));
     }
     public function interest(Question $question, Request $request){
         $interest=new Interest();
