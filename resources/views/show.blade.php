@@ -92,15 +92,16 @@
         @empty($question->user_id)
         
         @else
-         
+        
             {{ Form::open(['route' => ['question.reply', ['id' =>  $question->id]]]) }}
- 
-                {{ Form::label('question_show', '返信内容：') }}
                 
-                {{ Form::textarea('question_reply', null) }}
-                
-       
-                {{ Form::submit('返信する', ['class' => 'btn btn-outline-primary']) }}
+                <div class='form-group textarea'>
+                    {{ Form::label('question_show', '返信内容：') }}<br>
+                    {{ Form::textarea('question_reply', null) }}<br>
+                </div>
+                <div class='form-group'>
+                    {{ Form::submit('返信する', ['class' => 'btn btn-outline-primary']) }}<br>
+                </div>
             
             {{ Form::close() }}
         @endempty
@@ -133,8 +134,10 @@
             @else
             <p>回答がありません</p>
             @endif
+            
             <tr><td><p>いいね：{{$reply->goods()->count()}}<br><br>
         @auth
+        @if($reply->user_id!=$login_user_id)
             @isset($good)
             <!-- 「いいね」取消用ボタンを表示 -->
             </p>
@@ -150,7 +153,7 @@
 	        </a>
 	        <p></p>
             @endisset
-            
+            @endif
         @endauth
         </span>
         </table>

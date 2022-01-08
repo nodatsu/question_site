@@ -9,11 +9,11 @@
  @foreach ($questions as $question)
 <ul id="accordion_menu">
   <li>
-    <a data-toggle="collapse" href={{"#question".$loop->index}} aria-controls={{"#question".$loop->index}} aria-expanded="true">{{$question->title}}<br>{{$question->question_content}}</a>
+    <a data-toggle="collapse" href={{"#question".$loop->index}} aria-controls={{"#question".$loop->index}} aria-expanded="true">{{$question->title}}</a>
   </li>
   <ul id={{"question".$loop->index}} class="collapse" data-parent="#accordion_menu">
     <li>カテゴリ：{{$question->category->name}}</li>
-    <li>質問内容：{{$question->question_content}}</li>
+    <li>質問内容：<br>{{$question->question_content}}</li>
     <li>投稿者：{{$question->user->name}}</li>
     <li><a href="{{ route('question.detail', ['id' =>  $question->id]) }}" class="btn btn-outline-primary">詳細ページへ</a></li>
   </ul>
