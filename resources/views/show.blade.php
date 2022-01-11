@@ -55,9 +55,7 @@
         	<a href="{{ route('interest', $question) }}" class="btn btn-success btn-sm">
         		知りたい
         		<!-- 「いいね」の数を表示 -->
-        		<span class="badge">
-        			{{ $question->interests()->count() }}
-        		</span>
+        		
         	</a>
         	</p></td></tr>
         @endisset
@@ -95,13 +93,12 @@
         
             {{ Form::open(['route' => ['question.reply', ['id' =>  $question->id]]]) }}
                 
-                <div class='form-group textarea'>
                     {{ Form::label('question_show', '返信内容：') }}<br>
-                    {{ Form::textarea('question_reply', null) }}<br>
-                </div>
-                <div class='form-group'>
+                    {{ Form::textarea('question_reply', null, ['rows' => 3]) }}
+                    <p></p>
+               
                     {{ Form::submit('返信する', ['class' => 'btn btn-outline-primary']) }}<br>
-                </div>
+                    
             
             {{ Form::close() }}
         @endempty
@@ -174,9 +171,9 @@
     .center{
         text-align:center;
     }
-    .textarea{
+    textarea{
         width: 100%;
-        height: 75px;
+        /*height: 75px;*/
     }
     
 </style>
