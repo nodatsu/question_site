@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('qestion_content');
+            $table->string('question_content');
             $table->integer('category_id');
             $table->integer('interest');
             $table->timestamps();
