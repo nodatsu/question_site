@@ -29,6 +29,7 @@
                         <!-- Authentication Links -->
                         
                         <a class="nav-link" href="{{ route('question.help') }}">ヘルプ</a>
+                        <a class="nav-link" href="https://forms.office.com/r/CLrWYXbecA">アンケート</a>
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('ログイン') }}</a>
